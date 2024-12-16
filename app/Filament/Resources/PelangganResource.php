@@ -18,13 +18,18 @@ class PelangganResource extends Resource
     protected static ?string $model = Pelanggan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $label = 'Data Pelanggan';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama'),
-                Forms\Components\TextInput::make('no_hp'),
+                Forms\Components\TextInput::make('nama')
+                ->minLength(5)
+                ->required(),
+                Forms\Components\TextInput::make('no_hp')
+                ->unique(ignoreRecord:true)
+                ->label('Nomor Handphone'),
                 Forms\Components\TextInput::make('alamat'),
             ]);
     }
@@ -33,9 +38,9 @@ class PelangganResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama'),
+                Tables\Columns\TextColumn::make('nama')->searchable(),
                 Tables\Columns\TextColumn::make('no_hp'),
-                Tables\Columns\TextColumn::make('alamat'),
+                Tables\Columns\TextColumn::make('alamat')->searchable(),
             ])
             ->filters([
                 //
